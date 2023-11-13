@@ -31,6 +31,8 @@ require("prefab").setup({
 EOF
 ```
 
+For completions from the language server (e.g. flag names) you might want to install [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) or similar.
+
 ## Setup
 
 Using `require("prefab").setup`, you can pass a number of options
