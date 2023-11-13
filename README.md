@@ -2,6 +2,12 @@
 
 Neovim LSP functionality for [Prefab](https://prefab.cloud/)
 
+## features
+
+- Flag/Config name completion ![completion](./images/completion.png)
+- Diagnostics ![warning diagnostic](./images/diagnostic-missing-warning.png) ![error diagnostic](./images/diagnostic-missing-error.png)
+- Code lenses ![create lens](./images/code-lens-create.png) ![other lenses](./images/code-lens-other.png)
+
 ## Installation
 
 Using [lazy.nvim](https://github.com/folke/lazy.nvim)
