@@ -54,6 +54,11 @@ local setup = function(args)
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+        if not skip_responsiveness_handlers then
+            capabilities.workspace.diagnostics = {refreshSupport = true}
+            capabilities.workspace.codeLens = {refreshSupport = true}
+        end
+
         vim.lsp.start {
             name = "Prefab Language Server",
             cmd = args.cmd or {"prefab-ls", "--stdio"},

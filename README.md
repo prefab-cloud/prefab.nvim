@@ -10,6 +10,10 @@ Neovim LSP functionality for [Prefab](https://prefab.cloud/)
 
 ## Installation
 
+First, using node >= 18, do `npm install -g @prefab-cloud/prefab-cloud-language-server`
+
+You can configure neovim using the package manager of your choice. Here's a couple examples:
+
 Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
