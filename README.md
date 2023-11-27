@@ -44,6 +44,8 @@ EOF
 
 For completions from the language server (e.g. flag names) you might want to install [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) or similar.
 
+To make use of code lenses and code actions, you'll need to set up a key map the following functions: `vim.lsp.codelens.run()` and `vim.lsp.buf.code_action()`
+
 ## Setup
 
 Using `require("prefab").setup`, you can pass a number of options. See ./lua/prefab/init.lua for the defaults.
