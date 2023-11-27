@@ -2,28 +2,8 @@ local attach_func = function() end
 
 local attach = function() attach_func() end
 
--- This function lets us get synchronous input from the user while still
--- using any custom ui they've configured for vim.ui.input.
---
--- Since vim.ui.input is asynchronous, we have to use a timer to wait for
--- the user to enter something or cancel.
---
--- You may override this with the get_input_func option in `setup` but your
--- function must be synchronous.
 local default_get_input = function(_, req, _, _)
-    -- we look at this rather than nil because the user may have canceled
-    -- and rather than an empty string because the user may have typed
-    -- an empty string
-    local NO_VALUE = "-~<THERE_IS_NO_VALUE>~-"
-    local input = NO_VALUE
-    local timeout = 10
-
-    vim.ui.input({prompt = req.title .. ": "}, function(str) input = str end)
-
-    -- wait until the user has entered something or canceled
-    local timer = vim.uv.new_timer()
-    timer:start(timeout, timeout,
-                function() if input ~= NO_VALUE then timer:close() end end)
+    local input = vim.fn.input(req.title .. ": ", req.defaultValue or "")
 
     return {input = input, params = req.params}
 end
@@ -45,7 +25,8 @@ local setup = function(args)
         args.get_input_func or default_get_input
 
     attach_func = function()
-        local api_key = os.getenv("PREFAB_API_KEY") or args.prefab_api_key
+        local api_key = args.prefab_api_key or os.getenv("PREFAB_API_KEY")
+        local api_url = args.prefab_api_url or os.getenv("PREFAB_API_URL")
 
         if not api_key then
             print("Prefab API key not found. Please set PREFAB_API_KEY.")
@@ -81,7 +62,14 @@ local setup = function(args)
                 on_attach(client, bufnr)
             end,
             init_options = {customHandlers = {"$/prefab.getInput"}},
-            settings = {prefab = {apiKey = api_key, optIn = opt_in}}
+            settings = {
+                prefab = {
+                    apiKey = api_key,
+                    optIn = opt_in,
+                    alpha = args.alpha,
+                    apiUrl = api_url
+                }
+            }
         }
     end
 
