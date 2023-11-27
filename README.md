@@ -7,6 +7,7 @@ Neovim LSP functionality for [Prefab](https://prefab.cloud/)
 - Flag/Config name completion ![completion](./images/completion.png)
 - Diagnostics ![warning diagnostic](./images/diagnostic-missing-warning.png) ![error diagnostic](./images/diagnostic-missing-error.png)
 - Code lenses ![create lens](./images/code-lens-create.png) ![other lenses](./images/code-lens-other.png)
+- Code actions ![extract string](./images/code-action-extract-string.png) (requires `extractString` opt-in)
 
 ## Installation
 
@@ -45,7 +46,7 @@ For completions from the language server (e.g. flag names) you might want to ins
 
 ## Setup
 
-Using `require("prefab").setup`, you can pass a number of options
+Using `require("prefab").setup`, you can pass a number of options. See ./lua/prefab/init.lua for the defaults.
 
 | option                         | type     | usage                                                                                        |
 | ------------------------------ | -------- | -------------------------------------------------------------------------------------------- |
