@@ -79,50 +79,43 @@ local setup = function(args)
     })
 
     if not skip_responsiveness_handlers then
-        local orig_codelens_refresh =
-            vim.lsp.handlers["workspace/codeLens/refresh"] or
-                function() return {} end
         vim.lsp.handlers["workspace/codeLens/refresh"] =
-            function(err, result, ctx, config)
-                vim.lsp.codelens.refresh()
-                return orig_codelens_refresh(err, result, ctx, config)
-            end
-
-        local orig_diagnostic_refresh =
-            vim.lsp.handlers["workspace/diagnostic/refresh"] or
-                function() return {} end
-        vim.lsp.handlers["workspace/diagnostic/refresh"] =
-            function(err, result, ctx, config)
-                vim.diagnostic.reset()
-                return orig_diagnostic_refresh(err, result, ctx, config)
-            end
-
-        local orig_inlay_refresh =
-            vim.lsp.handlers["workspace/inlayHint/refresh"] or
-                function() return {} end
-        vim.lsp.handlers["workspace/inlayHint/refresh"] =
-            function(err, result, ctx, config)
-                local client_id = ctx.client_id
-
-                -- iterate over the attached buffers and toggle inlay hints to refresh them
-                for _, bufnr in
-                    pairs(vim.lsp.get_buffers_by_client_id(client_id)) do
-
-                    -- We call this two different ways since the api changed
-                    -- https://github.com/neovim/neovim/commit/448907f65d6709fa234d8366053e33311a01bdb9
-                    pcall(function()
-                        vim.lsp.inlay_hint.enable(bufnr, false)
-                        vim.lsp.inlay_hint.enable(bufnr, true)
-                    end)
-
-                    pcall(function()
-                        vim.lsp.inlay_hint(bufnr, false)
-                        vim.lsp.inlay_hint(bufnr, true)
-                    end)
+            vim.lsp.handlers["workspace/codeLens/refresh"] or
+                function(_, _, _, _)
+                    vim.lsp.codelens.refresh()
+                    return {}
                 end
 
-                return orig_inlay_refresh(err, result, ctx, config)
+        vim.lsp.handlers["workspace/diagnostic/refresh"] =
+            vim.lsp.handlers["workspace/diagnostic/refresh"] or function()
+                vim.diagnostic.reset()
+                return {}
             end
+
+        vim.lsp.handlers["workspace/inlayHint/refresh"] =
+            vim.lsp.handlers["workspace/inlayHint/refresh"] or
+                function(_, _, ctx, _)
+                    local client_id = ctx.client_id
+
+                    -- iterate over the attached buffers and toggle inlay hints to refresh them
+                    for _, bufnr in
+                        pairs(vim.lsp.get_buffers_by_client_id(client_id)) do
+
+                        -- We call this two different ways since the api changed
+                        -- https://github.com/neovim/neovim/commit/448907f65d6709fa234d8366053e33311a01bdb9
+                        pcall(function()
+                            vim.lsp.inlay_hint.enable(bufnr, false)
+                            vim.lsp.inlay_hint.enable(bufnr, true)
+                        end)
+
+                        pcall(function()
+                            vim.lsp.inlay_hint(bufnr, false)
+                            vim.lsp.inlay_hint(bufnr, true)
+                        end)
+                    end
+
+                    return {}
+                end
     end
 end
 
