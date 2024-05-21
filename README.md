@@ -50,11 +50,12 @@ To make use of code lenses and code actions, you'll need to set up a key map the
 
 Using `require("prefab").setup`, you can pass a number of options. See ./lua/prefab/init.lua for the defaults.
 
-| option                         | type     | usage                                                                                        |
-| ------------------------------ | -------- | -------------------------------------------------------------------------------------------- |
-| `prefab_api_key`               | string   | Specify your Prefab api key. Defaults to ENV var `PREFAB_API_KEY`                            |
-| `on_attach`                    | function | Allows specifying keybindings, etc. after the language server attaches                       |
-| `opt_in`                       | table    | Allows opting-in to beta features                                                            |
-| `file_pattern`                 | array    | Specify a custom list of extensions you want to automatically attach to. e.g. `{ "*.html" }` |
-| `get_input_func`               | function | Specify a custom synchronous UI function to get dynamic input                                |
-| `skip_responsiveness_handlers` | boolean  | Specify `true` to skip some functions that make Neovim's LSP handlers more responsive        |
+| option                         | type     | usage                                                                                                 |
+| ------------------------------ | -------- | ----------------------------------------------------------------------------------------------------- |
+| `prefab_api_key`               | string   | Specify your Prefab api key. Defaults to ENV var `PREFAB_API_KEY`                                     |
+| `on_attach`                    | function | Allows specifying keybindings, etc. after the language server attaches                                |
+| `opt_in`                       | table    | Allows opting-in to beta features                                                                     |
+| `file_pattern`                 | array    | Specify a custom list of extensions you want to automatically attach to. e.g. `{ "*.html" }`          |
+| `get_input_func`               | function | Specify a custom synchronous UI function to get dynamic input                                         |
+| `skip_responsiveness_handlers` | boolean  | Specify `true` to skip some functions that make Neovim's LSP handlers more responsive                 |
+| `root_dir`                     | function | Specify a custom function to determine the root directory of the project. Defaults to `vim.fn.getcwd` |

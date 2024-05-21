@@ -12,7 +12,8 @@ local setup = function(args)
     args = args or {}
 
     local opt_in = args.opt_in or {}
-    local on_attach = args.on_attach or function(client, bufnr) end
+    local on_attach = args.on_attach or function(_, _) end
+    local root_dir = args.root_dir or vim.fn.getcwd
     local file_pattern = args.file_pattern or {
         "*.js", "*.jsx", "*.ts", "*.tsx", "*.mjs", "*.cjs", "*.rb", "*.java",
         "*.erb", "*.py", "*.yml", "*.yaml"
@@ -27,6 +28,7 @@ local setup = function(args)
     attach_func = function()
         local api_key = args.prefab_api_key or os.getenv("PREFAB_API_KEY")
         local api_url = args.prefab_api_url or os.getenv("PREFAB_API_URL")
+        local name = "Prefab Language Server"
 
         if not api_key then
             print("Prefab API key not found. Please set PREFAB_API_KEY.")
@@ -41,9 +43,10 @@ local setup = function(args)
         end
 
         vim.lsp.start {
-            name = "Prefab Language Server",
+            name = name,
             cmd = args.cmd or {"prefab-ls", "--stdio"},
             capabilities = capabilities,
+            root_dir = root_dir(),
             on_attach = function(client, bufnr)
                 if not skip_responsiveness_handlers then
                     if client.supports_method("textDocument/codeLens") then
