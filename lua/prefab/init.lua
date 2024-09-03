@@ -50,13 +50,19 @@ local setup = function(args)
             on_attach = function(client, bufnr)
                 if not skip_responsiveness_handlers then
                     if client.supports_method("textDocument/codeLens") then
+                        local group_id =
+                            vim.api.nvim_create_augroup(
+                                "PrefabCodeLensResponsiveness", {})
+
                         vim.api.nvim_create_autocmd({
                             'BufEnter', 'BufWritePre', 'CursorHold'
                         }, {
+                            group = group_id,
+
                             buffer = bufnr,
 
                             callback = function()
-                                vim.lsp.codelens.refresh()
+                                vim.lsp.codelens.refresh({bufnr = bufnr})
                             end
                         })
                     end
